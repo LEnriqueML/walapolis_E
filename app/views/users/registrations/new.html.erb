@@ -1,0 +1,35 @@
+<div class="text-center">
+  <h2>¡Buenas Tardes!</h2>
+  <h5>Bienvenido a Walapolis</h5>
+</div>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <%= f.text_field :full_name, autofocus: true, class: 'form-control', placeholder: 'Nombre' %>
+    </div>
+    <div class="form-group col-sm-6">
+      <%= f.email_field :email, autocomplete: "email", class: 'form-control', placeholder: 'Email' %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <% if @minimum_password_length %>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "off", class: 'form-control', placeholder: 'Contraseña' %>
+      <small class="text-muted">(<%= @minimum_password_length %> characters minimum)</small>
+    </div>
+
+    <div class="form-group col-sm-6">
+      <%= f.label :password_confirmation, "Confirma tu contraseña:" %><br />
+      <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control', placeholder: 'Confirma tu Contraseña' %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= f.submit "Crear mi cuenta", class: 'btn btn-primary btn-block' %>
+  </div>
+<% end %>
+<div class="text-center">
+  <%= render "users/shared/links" %>
+</div>

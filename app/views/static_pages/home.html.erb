@@ -1,3 +1,7 @@
-<i class="fa fa-facebook fa-3x"></i>
+<i class="fab fa-facebook fa-3x"></i>
 <h1>StaticPages#home</h1>
 <p>Find me in app/views/static_pages/home.html.erb</p>
+<% if user_signed_in? %>
+	<h3>Teléfono: <%= current_user.phone if current_user.show_phone? %></h3>
+	<h3>Correo: <%= current_user.email if current_user.show_email? %></h3>
+<% end %>
