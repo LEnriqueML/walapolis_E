@@ -29,7 +29,7 @@ private
 def send_welcome_email
   require 'mailgun'   
   # First, instantiate the Mailgun Client with your API key
-  mg_client = Mailgun::Client.new 'key-25e30e44cecd1ead1a8f312979e5e9ee'    
+  mg_client = Mailgun::Client.new 'key'    
   # Define your message parameters
   message_params =  { from: 'hola@walapolis.com',
                       to: self.email,
