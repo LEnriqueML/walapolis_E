@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
     # confirmations: 'users/confirmations',
-    # omniauth_callbacks: 'users/omniauth_callbacks',
+    omniauth_callbacks: 'users/omniauth_callbacks',
     passwords: 'users/passwords',
     registrations: 'users/registrations',
     sessions: 'users/sessions',
@@ -9,8 +9,8 @@ Rails.application.routes.draw do
   }
 
   devise_scope :user do
-  	get 'entrar', to: 'devise/sessions#new', as: :entrar
-  	get 'registro', to: 'devise/registrations#new', as: :registro
+  	get 'entrar', to: 'users/sessions#new', as: :entrar
+  	get 'registro', to: 'users/registrations#new', as: :registro
   end
 
   root to: 'static_pages#home'
