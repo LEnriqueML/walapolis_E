@@ -2,6 +2,7 @@
 	<li><%= link_to "home", root_path %></li>
 	<% if user_signed_in? %>
 		<li><%= "#{current_user.full_name} (#{current_user.email})" %></li>
+		<li><%= link_to "Mis ideas", ideas_path %></li>
 		<li><%= link_to "Mi cuenta", edit_user_registration_path %></li>
 		<li><%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete %></li>
 	<% else %>

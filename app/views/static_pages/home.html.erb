@@ -5,3 +5,31 @@
 	<h3>Teléfono: <%= current_user.phone if current_user.show_phone? %></h3>
 	<h3>Correo: <%= current_user.email if current_user.show_email? %></h3>
 <% end %>
+<% if @ideas.present? %>
+	<% @ideas.each_slice(3) do |ideas|%>
+		<div class="row">
+			<% ideas.each do |idea| %>
+				<div class="col-md-4">
+					<p>IMAGEN</p>
+					<h2><%= idea.title %></h2>
+					<small>
+						<% idea.categories.each do |category|%>
+							<%= link_to category.name, root_path(categoria: category) %> |
+						<% end %>
+					</small>
+					<h5><%= idea.show_categories %></h5>
+					<p>Por: <%= idea.user.full_name %> hace <%= time_ago_in_words(idea.created_at) %></p>
+					<small>[LIKES_COUNT] likes // [COMMENTS_COUNT] comentarios</small>
+					<p><%= idea.body.truncate(140) %></p>
+					<p><button class="btn btn-primary"><i class="far fa-heart"> </i> Me gusta</button><%= link_to " Ver mas...", idea_path(idea) %></p>
+				</div>
+			<% end %>
+		</div>
+	<% end %>
+<% else %>
+	<% if user_signed_in? %>
+		<p>No existen ideas registradas <%= link_to "Crea la primera idea :D", new_idea_path %></p>
+	<% else %>
+		<p>No existen ideas registradas <%= link_to "Ingresa para crear la primera idea :D", entrar_path%></p>
+	<% end %>
+<% end %>

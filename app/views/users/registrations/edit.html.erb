@@ -20,6 +20,10 @@
     <%= f.email_field :email, disabled: true %>
   </div>
 
+  <div class="field">
+    <%= f.text_area :bio, class: 'form-control', placeholder: 'Cuentanos algo de ti' %>
+  </div>
+
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>

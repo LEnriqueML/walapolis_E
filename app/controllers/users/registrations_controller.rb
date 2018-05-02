@@ -2,7 +2,7 @@
 
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
-  before_action :configure_account_update_params, only: [:update]
+  # before_action :configure_account_update_params, only: [:update]
   before_action :set_greeting, only: [:new]
   # GET /resource/sign_up
   # def new
@@ -21,7 +21,33 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # PUT /resource
   def update
-    super
+    # super
+    new_params = params.require(:user).permit(:email, :phone, :show_phone, :show_email, :bio, :current_password, :password, :password_confirmation)
+    change_password = true
+    if params[:user][:password].blank?
+      params[:user].delete("password")
+      params[:user].delete("password_confirmation")
+      new_params = params.require(:user).permit(:email, :phone, :show_phone, :show_email, :bio)
+      change_password = false
+    end
+
+    @user = User.find(current_user.id)
+    is_valid = false
+
+    if change_password
+      is_valid = @user.update_with_password(new_params)
+    else
+      is_valid = @user.update_without_password(new_params)
+    end
+
+    if is_valid
+      # set_flash_message :notice, :updated
+      # sign_in @user, :bypass => true
+      # redirect_to after_update_path_for(@user)
+      redirect_to root_path, notice: 'Tu cuenta se ha actualizado'
+    else
+      render "edit"
+    end
   end
 
   # DELETE /resource
@@ -48,15 +74,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   # If you have extra params to permit, append them to the sanitizer.
-  def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:phone, :show_phone, :show_email])
-  end
+  # def configure_account_update_params
+  #   devise_parameter_sanitizer.permit(:account_update, keys: [:phone, :show_phone, :show_email, :bio])
+  # end
 
   # The path used after sign up.
-  def after_sign_up_path_for(resource)
-  #  super(resource)
-    edit_user_registration_path(resource)
-  end
+  # def after_sign_up_path_for(resource)
+  # #  super(resource)
+  #   edit_user_registration_path(resource)
+  # end
+
+  # def update_resource(resource, params)
+  #   resource.update_without_password(params)    
+  # end
 
   # The path used after sign up for inactive accounts.
   # def after_inactive_sign_up_path_for(resource)

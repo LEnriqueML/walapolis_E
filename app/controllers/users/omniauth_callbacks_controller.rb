@@ -15,7 +15,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session["devise.facebook_data"] = request.env["omniauth.auth"]
       # redirect_to new_user_registration_url
-      redirect_to new_user_session_path, notice: "#{request.env["omniauth.auth"].info.email. esta registrado con Google. Entra con Google.}"
+      redirect_to new_user_session_path, notice: "#{request.env["omniauth.auth"].info.email} esta registrado con Google. Entra con Google"
     end
   end
 
@@ -29,7 +29,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     else
       session["devise.google_data"] = request.env["omniauth.auth"]
       # redirect_to new_user_registration_url
-      redirect_to new_user_session_path, notice: "#{request.env["omniauth.auth"].info.email esta registrado con Facebook. Inicia sesión con Facebook.}"
+      redirect_to new_user_session_path, notice: "#{request.env["omniauth.auth"].info.email} esta registrado con Facebook. Inicia sesión con Facebook"
     end
   end
   # def failure

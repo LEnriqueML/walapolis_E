@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @idea.user %>
+</p>
+
+<p>
+  <strong>Categorias:</strong>
+  <ul>
+    <% @idea.categories.each do |category| %>
+    <li><%= category.name %></li>
+    <% end %>
+  </ul>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @idea.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @idea.body %>
+</p>
+
+<p>
+  <strong>Benefits:</strong>
+  <%= @idea.benefits %>
+</p>
+
+<p>
+  <strong>Initial cost:</strong>
+  <%= @idea.initial_cost %>
+</p>
+
+<p>
+  <strong>Monthly cost:</strong>
+  <%= @idea.monthly_cost %>
+</p>
+
+<p>
+  <strong>Estimated time:</strong>
+  <%= @idea.estimated_time %>
+</p>
+
+<%= link_to 'Edit', edit_idea_path(@idea) %> |
+<%= link_to 'Back', ideas_path %>

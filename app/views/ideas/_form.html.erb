@@ -1,0 +1,59 @@
+<%= form_with(model: idea, local: true) do |form| %>
+  <% if idea.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(idea.errors.count, "error") %> prohibited this idea from being saved:</h2>
+
+      <ul>
+      <% idea.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :body %>
+    <%= form.text_area :body %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :benefits %>
+    <%= form.text_field :benefits %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :initial_cost %>
+    <%= form.text_field :initial_cost %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :monthly_cost %>
+    <%= form.text_field :monthly_cost %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :estimated_time %>
+    <%= form.number_field :estimated_time %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label nil, 'Categorias:' %><br>
+    <% @categories.each do |category| %>
+      <div class="checkbox">
+        <label class="checkbox inline">
+          <%= check_box_tag :category_ids, category.id, @idea.categories.include?(category), name: 'idea[category_ids][]' %>
+          <%= category.name %>
+        </label>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
