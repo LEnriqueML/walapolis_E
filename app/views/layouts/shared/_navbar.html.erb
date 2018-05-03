@@ -6,8 +6,11 @@
 		<li><%= link_to "Mi cuenta", edit_user_registration_path %></li>
 		<li><%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete %></li>
 	<% else %>
-
 		<li><%= link_to "Entrar", entrar_path %></li>
 		<li><%= link_to "Crear cuenta", registro_path %></li>
 	<% end %>
 </ul>
+<form action="<%= root_path %>">
+	<input type="text" name="search" class="form-control">
+	<button type="submit" class="btn btn-light"><i class="fas fa-search"></i> Buscar Idea</button>
+</form>

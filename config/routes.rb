@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # resources :likes
   resources :ideas
   devise_for :users, controllers: {
     # confirmations: 'users/confirmations',
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
   end
 
   root to: 'static_pages#home'
+  post '/likes/tgol/:user_id/:idea_id', to: 'likes#the_god_of_likes', as: :tgol
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

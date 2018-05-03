@@ -1,0 +1,39 @@
+$(document).on('turbolinks:load', function(){
+  $('.button-like').on("click", function(){
+    var button = $(this);
+    var liked = button.attr("data-liked");
+    var user = button.attr("data-user");
+    var idea = button.attr("data-idea");
+
+    $.ajax({
+		url: "/likes/tgol/"+user+"/"+idea,
+    	type: 'POST',
+      	beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))}
+			// dataType: 'json',
+			// data: {param1: 'value1'},
+		})
+	.done(function() {
+      console.log(liked);
+      if(liked == "true"){
+        console.log("Ya no me gusta");
+        button.attr('data-liked', 'false' );
+        button.removeClass('btn-outline-primary');
+        button.addClass('btn-primary');
+        button.html("<i class='far fa-thumbs-up'></i> Me gusta");
+      }else{
+        console.log("Me gusta");
+        button.attr('data-liked', 'true' );
+        button.removeClass('btn-primary');
+        button.addClass('btn-outline-primary');
+        button.html("<i class='far fa-thumbs-down'></i> Ya no me gusta");
+      }
+		})
+		.fail(function() {
+			alert("Ocurrio un error :(, intentalo mas tarde :)");
+		})
+		.always(function() {
+			//console.log("complete");
+		});
+
+  });
+});

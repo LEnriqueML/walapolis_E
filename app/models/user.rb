@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   after_create :send_welcome_email
   has_many :ideas
+  has_many :likes
   # after_create :set_defaults
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -25,21 +26,32 @@ def self.from_omniauth(auth)
   end
 end
 
+def like_idea(idea)
+  like = Like.where("user_id = ? AND idea_id = ?", self.id, idea.id).first
+  if like.present?
+      return true
+    else
+      return false
+    end
+end
+
+
 private
 
- def send_welcome_email
-  require 'mailgun'  
-  # First, instantiate the Mailgun Client with your API key
-  mg_client = Mailgun::Client.new ''  
-  # Define your message parameters
-  message_params = { from: 'hola@walapolis.com',
-            to: self.email,
-            subject: '¡Bienvenido a Walapolis!',
-            text:  "WOW! #{self.full_name} Ya estás dentro de Walapolis :D"
-           }  
-  # Send your message through the client
-  mg_client.send_message '', message_params
- end
+  def send_welcome_email
+    require 'mailgun'   
+    # First, instantiate the Mailgun Client with your API key
+    mg_client = Mailgun::Client.new "#{ENV['MAILGUN_API_KEY']}"    
+    # Define your message parameters
+    message_params =  { from: 'hola@walapolis.com',
+                        to: self.email,
+                        subject: '¡Bienvenido a Walapolis!',
+                        text:    "WOW! #{self.full_name} Ya estás dentro de Walapolis :D"
+                      }   
+    # Send your message through the client
+    mg_client.send_message "#{ENV['MAILGUN_DOMAIN']}", message_params
+  end
+
   # private
   # 	def set_defaults
   # 		self.update(show_email: true, show_phone: false)

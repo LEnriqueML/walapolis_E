@@ -1,0 +1,8 @@
+<% if user_signed_in? %>
+	<%= button_tag "<i class='far #{current_user.like_idea(idea) ? 'fa-thumbs-down' : 'fa-thumbs-up'}'></i> #{current_user.like_idea(idea) ? 'Ya no me gusta' : 'Me gusta'}".html_safe, class: "btn button-like #{current_user.like_idea(idea) ? 'btn-outline-primary' : 'btn-primary'}", data: {liked: "#{current_user.like_idea(idea) ? true : false}", user: "#{current_user.id}", idea: "#{idea.id}"}%>
+<% else %>
+	<p>Inicia sesión para votar</p>
+<% end %>
+
+<!-- if_this_true then [CODE_BLOCK] else [CODE_BLOCK]
+if_this_true ? [] : [] -->

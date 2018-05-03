@@ -8,6 +8,10 @@ Bundler.require(*Rails.groups)
 
 module Walapolis
   class Application < Rails::Application
+	if Rails.env.development?
+		require 'dotenv/load'
+	end
+	# Dotenv.load
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
