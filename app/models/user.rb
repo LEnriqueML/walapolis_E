@@ -2,6 +2,7 @@ class User < ApplicationRecord
   after_create :send_welcome_email
   has_many :ideas
   has_many :likes
+  has_many :comments
   # after_create :set_defaults
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -35,6 +36,9 @@ def like_idea(idea)
     end
 end
 
+def first_name
+  self.full_name.blank? ? self.eamil : self.full_name.split(" ")[0]
+end
 
 private
 

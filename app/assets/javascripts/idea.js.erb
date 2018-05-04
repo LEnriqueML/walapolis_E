@@ -4,6 +4,7 @@ $(document).on('turbolinks:load', function(){
     var liked = button.attr("data-liked");
     var user = button.attr("data-user");
     var idea = button.attr("data-idea");
+    var count_likes = $('.count_likes');
 
     $.ajax({
 		url: "/likes/tgol/"+user+"/"+idea,
@@ -20,12 +21,18 @@ $(document).on('turbolinks:load', function(){
         button.removeClass('btn-outline-primary');
         button.addClass('btn-primary');
         button.html("<i class='far fa-thumbs-up'></i> Me gusta");
+        var a = count_likes.html();
+        a = parseInt(a);
+        count_likes.html(a-1);
       }else{
         console.log("Me gusta");
         button.attr('data-liked', 'true' );
         button.removeClass('btn-primary');
         button.addClass('btn-outline-primary');
         button.html("<i class='far fa-thumbs-down'></i> Ya no me gusta");
+        var a = count_likes.html();
+        a = parseInt(a);
+        count_likes.html(a+1);
       }
 		})
 		.fail(function() {

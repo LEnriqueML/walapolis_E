@@ -19,7 +19,7 @@
 					</small>
 					<!-- <h5><%= idea.show_categories %></h5> -->
 					<p>Por: <%= idea.user.full_name %> hace <%= time_ago_in_words(idea.created_at) %></p>
-					<small><%= idea.total_like %> likes // [COMMENTS_COUNT] comentarios</small>
+					<small><span class="count_likes"><%= idea.total_like %></span> likes // [COMMENTS_COUNT] comentarios</small>
 					<p><%= idea.body.truncate(140) %></p>
 					<p><%= render 'layouts/shared/likebutton', idea: idea %><%= link_to " Ver mas...", idea_path(idea) %></p>
 				</div>
