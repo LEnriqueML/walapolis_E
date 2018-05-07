@@ -12,4 +12,10 @@ class StaticPagesController < ApplicationController
 	  	@ideas = Idea.all
   	end
   end
+  def user_profile
+    if params[:ideas]
+      @usuario = User.includes(:ideas).where("user.id"=> params[:ideas])
+    end
+    
+  end
 end

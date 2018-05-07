@@ -24,9 +24,9 @@ class IdeasController < ApplicationController
 
   # GET /ideas/1/edit
   def edit
-    if @idea.user_id != current_user.id
-      redirect_to root_path, alert: '¡La idea que quieres modificar no te pertenece!' 
-    end
+    # if @idea.user_id != current_user.id
+    #   redirect_to root_path, alert: '¡La idea que quieres modificar no te pertenece!' 
+    # end
   end
 
   # POST /ideas
@@ -78,7 +78,7 @@ class IdeasController < ApplicationController
     def set_idea
       @idea = Idea.find(params[:id])
     end
-     
+    #Verifica la propiedad del usuario con respecto a la idea
     def verify_ownership
       redirect_to root_path, alert: "Acceso denegado" if @idea.user_id != current_user.id
     end

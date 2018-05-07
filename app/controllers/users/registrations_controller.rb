@@ -22,12 +22,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # PUT /resource
   def update
     # super
-    new_params = params.require(:user).permit(:email, :phone, :show_phone, :show_email, :bio, :current_password, :password, :password_confirmation)
+    new_params = params.require(:user).permit(:phone, :show_phone, :show_email, :bio, :current_password, :password, :password_confirmation, :full_name, :image)
     change_password = true
     if params[:user][:password].blank?
       params[:user].delete("password")
       params[:user].delete("password_confirmation")
-      new_params = params.require(:user).permit(:email, :phone, :show_phone, :show_email, :bio)
+      new_params = params.require(:user).permit(:phone, :show_phone, :show_email, :bio, :full_name, :image)
       change_password = false
     end
 
@@ -64,13 +64,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
- 
-
   protected
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:full_name, :phone])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:full_name, :phone, :image])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

@@ -1,16 +1,61 @@
-<ul>
-	<li><%= link_to "home", root_path %></li>
-	<% if user_signed_in? %>
-		<li><%= "#{current_user.full_name} (#{current_user.email})" %></li>
-		<li><%= link_to "Mis ideas", ideas_path %></li>
-		<li><%= link_to "Mi cuenta", edit_user_registration_path %></li>
-		<li><%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete %></li>
-	<% else %>
-		<li><%= link_to "Entrar", entrar_path %></li>
-		<li><%= link_to "Crear cuenta", registro_path %></li>
-	<% end %>
-</ul>
-<form action="<%= root_path %>">
-	<input type="text" name="search" class="form-control">
-	<button type="submit" class="btn btn-light"><i class="fas fa-search"></i> Buscar Idea</button>
-</form>
+<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+  <a class="navbar-brand text-primary" href="<%= root_path %>" style="font-weight: 700;">walapolis</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-tags"></i> Categorías
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <!-- <a class="dropdown-item" href="#">Action</a> -->
+          <% Category.all.order('id asc').each do |category| %>
+          	<%= link_to "<i class='#{category}'></i> #{category.name}".html_safe, root_path(categoria: category), class: 'dropdown-item' %>
+          <% end %>
+        </div>
+      </li>
+      <li class="nav-item">
+      	<form action="<%= root_path %>" class="form-inline">
+      		<input class="form-control mr-sm-2" type="search" placeholder="Buscar propuestas..." aria-label="Search" name="search">
+      		<button class="d-md-none btn btn-outline-success btn-block my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Buscar</button>
+    		</form>
+      </li>
+      <li class="nav-item">
+        <%= link_to "<i class='fas fa-plus-circle'></i> Publicar propuesta".html_safe, new_idea_path, class: 'nav-link' %>
+      </li>
+    </ul>
+    <ul class="navbar-nav mr-5">
+    	<% if user_signed_in? %>
+      	<li class="nav-item">
+        	<%= link_to "<i class='fas fa-home'></i> Home".html_safe, root_path , class: 'nav-link' %>
+      	</li>    	
+      	<li class="nav-item dropdown">
+      	  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      	    <% if current_user.image.attached? %>
+              <%= image_tag current_user.image, width: 25, height: 25, class: 'rounded-circle' %> <%= current_user.email %>
+            <% else %>
+              <i class="fas fa-user-circle"></i> <%= current_user.email %>
+            <% end %>
+      	  </a>
+      	  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      	    <!-- <a class="dropdown-item" href="#">Action</a> -->
+      	    <%= link_to "<i class='far fa-lightbulb'></i> Mis propuestas".html_safe, ideas_path, class: 'dropdown-item' %>
+      	    <%= link_to "<i class='far fa-user'></i> Mi cuenta".html_safe, edit_user_registration_path, class: 'dropdown-item' %>
+      	    <div class="dropdown-divider"></div>
+      	    <%= link_to "<i class='fas fa-sign-out-alt'></i> Cerrar sesión".html_safe, destroy_user_session_path, method: :delete, class: 'dropdown-item' %>
+      	  </div>
+      	</li>    	
+    	<% else %>
+    		<li class="nav-item">
+    			<li><%= link_to "Crear cuenta", registro_path, class: 'nav-link' %></li>
+    		</li>
+    		<li class="nav-item">
+    			<li><%= link_to "Iniciar sesión", entrar_path, class: 'nav-link' %></li>
+    		</li>    		
+    	<% end %>
+    </ul>
+  </div>
+</nav>

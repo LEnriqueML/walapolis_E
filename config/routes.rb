@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   	get 'registro', to: 'users/registrations#new', as: :registro
   end
 
+  get '/user_profile', to: 'static_pages#user_profile', as: :user_profile
+
   root to: 'static_pages#home'
   post '/likes/tgol/:user_id/:idea_id', to: 'likes#the_god_of_likes', as: :tgol
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

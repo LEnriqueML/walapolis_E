@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   after_create :send_welcome_email
-  has_many :ideas
-  has_many :likes
-  has_many :comments
+  has_one_attached :image
+  has_many :ideas, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
   # after_create :set_defaults
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -19,8 +20,10 @@ def self.from_omniauth(auth)
   where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
     user.email = auth.info.email
     user.password = Devise.friendly_token[0,20]
-    user.full_name = auth.info.name   # assuming the user model has a name
+    user.full_name = auth.info.name
     # user.image = auth.info.image # assuming the user model has an image
+    require 'open-uri'
+    user.image.attach(io: File.new(open(auth.info.image.to_s)), filename: "#{auth.info.email}-#{rand(100)}", content_type: "image/jpg")
     # If you are using confirmable and the provider(s) you use validate emails, 
     # uncomment the line below to skip the confirmation emails.
     # user.skip_confirmation!

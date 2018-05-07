@@ -67,3 +67,4 @@ gem 'devise'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'mailgun-ruby', '~>1.1.6'
+gem "aws-sdk-s3"

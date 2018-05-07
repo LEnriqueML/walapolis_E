@@ -23,17 +23,16 @@
   <div class="row mb-4">
     <div class="form-group col-sm-4">
       <%= form.label :benefits, "Beneficio 1:" %>
-      <%= form.text_field :benefits, name: 'idea[benefits][]', placeholder: "Menciona un beneficio de tu propuesta", class: 'form-control', value: idea.benefits.first %>
-    </div>
+      <%= form.text_field :benefits, name: 'idea[benefits][]', class: 'form-control', value: idea.benefits.try(:first) %>    </div>
 
       <div class="form-group col-sm-4">
       <%= form.label :benefits, "Beneficio 2:" %>
-      <%= form.text_field :benefits, name: 'idea[benefits][]', placeholder: "Menciona un beneficio de tu propuesta", class: 'form-control', value: idea.benefits.second %>
+      <%= form.text_field :benefits, name: 'idea[benefits][]', class: 'form-control', value: idea.benefits.try(:second) %>
     </div>
 
       <div class="form-group col-sm-4">
       <%= form.label :benefits, "Beneficio 3:" %>
-      <%= form.text_field :benefits, name: 'idea[benefits][]', placeholder: "Menciona un beneficio de tu propuesta", class: 'form-control', value: idea.benefits.third %>
+      <%= form.text_field :benefits, name: 'idea[benefits][]', class: 'form-control', value: idea.benefits.try(:third) %>
     </div>    
   </div>
 
@@ -67,11 +66,8 @@
   <% end %>  
 </div>
 
-  <div class="form-group">
-    
-  </div>
-
-  <div class="form-group">
+  <div class="form-group text-center" style="padding-top: 20px">
     <%= form.submit controller.action_name == 'new' ? "Publicar idea" : "Actualizar idea", class: 'btn btn-primary' %>
+    <%= link_to '[X] Cancelar cambios', idea_path(idea) %>
   </div>
 <% end %>

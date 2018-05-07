@@ -6,8 +6,12 @@
     <% end %>
   </small>
   <p class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </p>
-  <div class="uer-avatar">
-    <i class="fas fa-user-circle fa-3x"></i>
+  <div class="user-avatar">
+    <% if @idea.user.image.attached? %>
+        <%= image_tag @idea.user.image, width: 90, class: 'rounded-circle' %>
+      <% else %>
+        <i class="fas fa-user-circle fa-3x"></i> <!-- current_user.image -->
+      <% end %>
   </div>
   <span><%= @idea.user.full_name %></span>
   <% if @idea.user.verificated? %>
@@ -18,8 +22,11 @@
 <div class="row">
   
   <div class="col-md-9">
-    <p><span style="font-size: 40px"><%= @idea.title %></span> - <%= @idea.show_categories %></p>
-    <p>Por: <i class="fas fa-user-circle"></i> <%= @idea.user.full_name %>  //  <%= @idea.created_at.strftime("%d/%m/%y") %></p>
+    <p><span style="font-size: 30px"><%= @idea.title %></span> - <%= @idea.show_categories %></p>
+    <p>
+      <!-- Condicion para verificar que el usuario aya añadido una imagen a su perfil, si no se muestra un fa icon -->
+      Por <%= @idea.user.image.attached? ? (image_tag @idea.user.image, width: 20, class: 'rounded-circle') : "<i class='fas fa-user-circle'></i>".html_safe %> <%= @idea.user.full_name %> - <%= @idea.created_at.strftime("%d/%m/%Y") %>
+    </p>
     <div>
       <%= render 'layouts/shared/likebutton', idea: @idea %>
       <span class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </span>
@@ -43,7 +50,7 @@
     <div id="comments" class="mt-3">
       <div class="card">
         <div class="card-header">
-          <p class="text-right"> <%= @idea.total_comment %> comentarios</p>
+          <p class="text-right"> <%= @idea.total_comments %> comentarios</p>
           <% if user_signed_in? %>
           <p>Deja tu comentario</p>
           <%= render 'comments/form', comment: @comment%>
@@ -122,46 +129,3 @@
 
 
 <p id="notice"><%= notice %></p>
-
-<!-- <p>
-  <strong>Categorias:</strong>
-  <ul>
-    <%# @idea.categories.each do |category| %>
-    <li><%#= category.name %></li>
-    <%# end %>
-  </ul>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @idea.title %>
-</p>
-
-<p>
-  <strong>Body:</strong>
-  <%= @idea.body %>
-</p>
-
-<p>
-  <strong>Benefits:</strong>
-  <%= @idea.benefits %>
-</p>
-
-<p>
-  <strong>Initial cost:</strong>
-  <%= @idea.initial_cost %>
-</p>
-
-<p>
-  <strong>Monthly cost:</strong>
-  <%= @idea.monthly_cost %>
-</p>
-
-<p>
-  <strong>Estimated time:</strong>
-  <%= @idea.estimated_time %>
-</p>
-
-<%#= link_to 'Edit', edit_idea_path(@idea) %> |
-<%#= link_to 'Back', ideas_path %>
- -->

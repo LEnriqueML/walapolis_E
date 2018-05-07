@@ -1,41 +1,42 @@
-<h2>Log in</h2>
+<div class="container" style="padding-top: 80px">
+  <%= render 'layouts/shared/greetings' %>
+  <div class="row" style="padding-top: 40px">
+    <div class="offset-md-2 col-md-4">
+      <br>
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="form-group">
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Correo electrónico', class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= f.password_field :password, autocomplete: "off", placeholder: 'Contraseña', class: 'form-control' %>
+        </div>
+        <% if devise_mapping.rememberable? -%>
+          <div class="form-group text-center">
+            <%= f.check_box :remember_me %>
+            <%= f.label nil, "Recordarme" %>
+          </div>
+        <% end -%>
 
-<%= render 'layouts/shared/greetings' %>
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+        <div class="form-group text-center">
+          <%= f.submit "Iniciar sesión", class: 'btn btn-primary' %>
+        </div>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
-
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+        <div class="text-center">
+          <%= render "users/shared/links" %>
+        </div> 
+      
+      <% end %>
     </div>
-  <% end -%>
-
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-
-  <div class="form-group text-center">
-    <%= link_to "He olvidado mi contrsaeña", new_user_password_path%>
-  </div>
-
-  <hr>
-<div class="row">
-  <div class="col-md-6">
-    <%= link_to "<i class='fab fa-facebook'></i> Entrar con Facebook".html_safe, user_facebook_omniauth_authorize_path, class: 'btn btn-success btn-block' %>
-  </div>
-  <div class="col-md-6">
-    <%= link_to "<i class='fab fa-google'></i> Entrar con Google".html_safe, user_google_oauth2_omniauth_authorize_path, class: 'btn btn-success btn-block' %>
+    <div class=".d-none .d-sm-block .d-sm-none .d-md-block" style="border-left-width: 1px; border-left-style: solid; border-left-color: rgba(160,152,152);"></div>
+    <div class="col-md-4">
+      <br>
+      <div class="form-group">
+        <!-- <button class="btn btn-primary"><i class="fab fa-facebook"></i> FACEBOOK!</button> -->
+        <%= link_to "<i class='fab fa-facebook'></i> Entrar con Facebook".html_safe, user_facebook_omniauth_authorize_path, class: 'btn btn-outline-primary btn-block' %>
+      </div>
+      <div class="form-group">
+        <%= link_to "<i class='fab fa-google'></i> Entrar con Google".html_safe, user_google_oauth2_omniauth_authorize_path, class: 'btn btn-outline-danger btn-block' %>
+      </div>
+    </div>
   </div>
 </div>
-<% end %>
-
-<%= render "users/shared/links" %>

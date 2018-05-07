@@ -56,6 +56,7 @@ class CommentsController < ApplicationController
   # DELETE /comments/1.json
   def destroy
     idea = @comment.idea.id
+    # Validar que el usuario que quiere borrar la idea, sea dueño de esta
     if @comment.user == current_user
       @comment.destroy
       respond_to do |format|
@@ -72,7 +73,7 @@ class CommentsController < ApplicationController
     def set_comment
       @comment = Comment.find(params[:id])
     end
-
+    #funcion para verificar propiedad del usuario y redireccionarlo a otra pagina con un alert
     def verify_ownership
       redirect_to root_path, alert: {class: 'alert-danger', body: "Este intento de violación de datos personales infringe la Ley Federal de Transparencia y Acceso a la Información y Protección de Datos Personales por lo que se ha realizado la denuncia correspondiente ante la Procudaría General de la República (PGR) y ha quedado asentada en la carpeta de investigación PGR/#{Time.zone.now.year}/#{Time.zone.now.month}/#{Time.zone.now.day}/#{rand(1000)} >:-("} if @comment.user_id != current_user.id
     end

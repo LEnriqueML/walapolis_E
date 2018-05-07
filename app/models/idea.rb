@@ -15,8 +15,10 @@ class Idea < ApplicationRecord
   end
   
   def to_param
-    # crea una ruta para el link
-  	"#{self.id}-#{self.title.parameterize}"
+    # crea una ruta "personalizada" para el link
+  	# "#{self.id}-#{self.title.parameterize}"
+    # Se cambia la linea anterior con un try para evitar un error si aun no existe la idea
+    "#{self.id}-#{self.title.try(:parameterize)}"
   end
 
   def total_like
@@ -24,7 +26,7 @@ class Idea < ApplicationRecord
     return likes
   end
   
-  def total_comment
+  def total_comments
     comments = Comment.where(idea_id: self.id).count 
     return comments
   end

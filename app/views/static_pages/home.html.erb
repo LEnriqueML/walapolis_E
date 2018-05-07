@@ -1,35 +1,46 @@
-<i class="fab fa-facebook fa-3x"></i>
-<h1>StaticPages#home</h1>
-<p>Find me in app/views/static_pages/home.html.erb</p>
-<% if user_signed_in? %>
-	<h3>Teléfono: <%= current_user.phone if current_user.show_phone? %></h3>
-	<h3>Correo: <%= current_user.email if current_user.show_email? %></h3>
-<% end %>
-<% if @ideas.present? %>
-	<% @ideas.each_slice(3) do |ideas|%>
-		<div class="row">
-			<% ideas.each do |idea| %>
-				<div class="col-md-4">
-					<p>IMAGEN</p>
-					<h2><%= idea.title %></h2>
-					<small>
-						<% idea.categories.each do |category|%>
-							<%= link_to category.name, root_path(categoria: category) %> |
-						<% end %>
-					</small>
-					<!-- <h5><%= idea.show_categories %></h5> -->
-					<p>Por: <%= idea.user.full_name %> hace <%= time_ago_in_words(idea.created_at) %></p>
-					<small><span class="count_likes"><%= idea.total_like %></span> likes // [COMMENTS_COUNT] comentarios</small>
-					<p><%= idea.body.truncate(140) %></p>
-					<p><%= render 'layouts/shared/likebutton', idea: idea %><%= link_to " Ver mas...", idea_path(idea) %></p>
-				</div>
-			<% end %>
-		</div>
-	<% end %>
-<% else %>
-	<% if user_signed_in? %>
-		<p>No existen ideas registradas <%= link_to "Crea la primera idea :D", new_idea_path %></p>
+<div class="container" style="padding-top: 120px">
+	<% if @ideas.present? %>
+		<% @ideas.each_slice(3) do |ideas| %>
+			<div class="row mb-5">
+				<% ideas.each do |idea| %>
+					<div class="col-sm-4">
+						<div class="card">
+							<%# image_tag 'idea-bg.jpg', class: 'card-img-top', style: 'min-height: 265px; max-height: 265px;' %>
+							<div class="card-body">
+							   <h5 class="card-title"><%= idea.title %></h5>
+							   	<p>
+							   		<small>
+										<% idea.categories.each do |category| %>
+											<%= link_to category.name, root_path(categoria: category) %> |
+										<% end %>
+										</small>
+									</p>
+							   <small class="card-subtitle mb-2 text-muted">
+							   	Por <%= link_to idea.user.full_name, nil %> hace <%= time_ago_in_words(idea.created_at) %><br>
+									<%= idea.total_like %> likes // <%= idea.total_comments %> comentarios
+							   </small>
+							   <p class="card-text"><%= idea.body.truncate(140) %></p>
+							 </div>
+							 <div class="card-footer">
+							 	<div class="row">
+							 		<div class="col-sm-6">
+							 			<%= render 'layouts/shared/likebutton', idea: idea %>
+							 		</div>
+							 		<div class="col-sm-6">
+							 			<%= link_to "<i class='fas fa-external-link-alt'></i> Leer más".html_safe, idea_path(idea), class: 'btn btn-link' %>
+							 		</div>
+							 	</div>
+							 </div>
+						</div>
+					</div>
+				<% end %>
+			</div>
+		<% end %>
 	<% else %>
-		<p>No existen ideas registradas <%= link_to "Ingresa para crear la primera idea :D", entrar_path%></p>
+		<% if user_signed_in? %>
+			<p>No existen propuestas publicadas. <%= link_to "Publica la primer propuesta en Walapolis", new_idea_path %></p>
+		<% else %>
+			<p>No existen propuestas publicadas. <%= link_to "Ingresa para publicar la primer propuesta en Walapolis", new_user_session_path %></p>
+		<% end %>
 	<% end %>
-<% end %>
+</div>
