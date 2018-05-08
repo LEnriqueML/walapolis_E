@@ -1,5 +1,6 @@
 class Idea < ApplicationRecord
   belongs_to :user
+  has_one_attached :image
   has_many :likes
   has_many :category_ideas
   has_many :categories, through: :category_ideas

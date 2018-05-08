@@ -1,0 +1,42 @@
+<div class="container" style="padding-top: 80px">
+	<div class="row">
+		<div class="col-md-3" style="background: #999; padding: 20px">
+			<div class="user-avatar text-center pb-5">
+			    <% if @user.image.attached? %>
+			    	<%= image_tag @user.image, width: 90, class: 'rounded-circle pb-2' %>
+			    <% else %>
+			    	<i class="fas fa-user-circle fa-3x pb-2"></i><br> <!-- current_user.image -->
+			    <% end %>
+			    <span><%= @user.full_name %></span>
+				<% if @user.verificated? %>
+					<span class="text-primary"><i class="fas fa-check-circle"></i> Verificado</span>
+				<% end %>
+			</div>
+			<small>
+				<%= @user.bio %>
+			</small>
+			<p>
+				<i class="far fa-lightbulb"></i> <%= @ideas.count %> Propuestas publicada
+			</p>
+			<p>
+				<i class="far fa-thumbs-up"></i> Sus propuestas han recibido <%= @likes_global %>
+			</p>
+			<% if @most_popular.likes.count > 0 %>
+				<p>
+					<i class="fas fa-trophy"></i> Su propuesta mas votada es <%= link_to @most_popular.title, idea_path(@most_popular) %>
+				</p>
+			<% end %>
+			<p>
+				<i class="fas fa-dollar-sign"></i> Sus propuestas suman un costo aproximado de <%= number_to_currency(@total_cost) %>
+			</p>
+			<%= render 'layouts/shared/talk_to_user', user: @user %>
+	    </div>
+	    <div class="col-md-9">
+	    	<% if @ideas.present? %>
+				<%= render 'layouts/shared/ideas', col_size: 6, ideas_by_row: 2 %>
+			<% else %>
+				<p>Este usuario no tiene ideas publicadas en este momento.</p>
+			<% end %>
+	    </div>
+	</div>
+</div>

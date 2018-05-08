@@ -7,6 +7,14 @@ class StaticPagesController < ApplicationController
     elsif params[:search] 
       #encontrar todas las ideas que concuerden con su title
       @ideas = Idea.where("title ILIKE ?", "%#{params[:search]}%")
+    elsif params[:filter]
+      if params[:filter] == 'most_popular'
+        @ideas = Idea.all.sort_by{|idea| idea.total_like}.reverse
+      elsif params[:filter] == 'most-recent'
+        @ideas = Idea.all.order('id desc')
+      else
+        @ideas = Idea.all.order('id asc')
+      end
   	else
   		# Enviar todas las ideas
 	  	@ideas = Idea.all

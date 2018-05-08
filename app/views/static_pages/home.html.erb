@@ -1,41 +1,6 @@
-<div class="container" style="padding-top: 120px">
+<div class="container">
 	<% if @ideas.present? %>
-		<% @ideas.each_slice(3) do |ideas| %>
-			<div class="row mb-5">
-				<% ideas.each do |idea| %>
-					<div class="col-sm-4">
-						<div class="card">
-							<%# image_tag 'idea-bg.jpg', class: 'card-img-top', style: 'min-height: 265px; max-height: 265px;' %>
-							<div class="card-body">
-							   <h5 class="card-title"><%= idea.title %></h5>
-							   	<p>
-							   		<small>
-										<% idea.categories.each do |category| %>
-											<%= link_to category.name, root_path(categoria: category) %> |
-										<% end %>
-										</small>
-									</p>
-							   <small class="card-subtitle mb-2 text-muted">
-							   	Por <%= link_to idea.user.full_name, nil %> hace <%= time_ago_in_words(idea.created_at) %><br>
-									<%= idea.total_like %> likes // <%= idea.total_comments %> comentarios
-							   </small>
-							   <p class="card-text"><%= idea.body.truncate(140) %></p>
-							 </div>
-							 <div class="card-footer">
-							 	<div class="row">
-							 		<div class="col-sm-6">
-							 			<%= render 'layouts/shared/likebutton', idea: idea %>
-							 		</div>
-							 		<div class="col-sm-6">
-							 			<%= link_to "<i class='fas fa-external-link-alt'></i> Leer más".html_safe, idea_path(idea), class: 'btn btn-link' %>
-							 		</div>
-							 	</div>
-							 </div>
-						</div>
-					</div>
-				<% end %>
-			</div>
-		<% end %>
+		<%= render "layouts/shared/ideas", col_size: 4, ideas_by_row: 3 %>
 	<% else %>
 		<% if user_signed_in? %>
 			<p>No existen propuestas publicadas. <%= link_to "Publica la primer propuesta en Walapolis", new_idea_path %></p>

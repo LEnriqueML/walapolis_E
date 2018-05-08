@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
@@ -8,6 +6,41 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # def new
   #   super
   # end
+
+# aqui se crea la variable para cargar los elementos que necesitamos
+  def profile
+    #encontramos al usuario
+    @user = User.find(params[:user_id])
+    #encontramos las propuestas del usuario
+    @ideas = Idea.where(user_id: @user.id)
+    # Inicializamos likes
+    @likes_global = 0
+    @total_cost = 0
+    # Validamos que existan ideas
+    if @ideas.present?
+      # Recorremos las propuestas del usuario y sumamos sus like y encontramos la mas popular
+      # Sumamos totos sus likes
+      # Encontramos su idea mas popular
+      # Sumamos el costo total de sus ideas
+      @most_popular = @ideas.first
+      @ideas.each do |idea|
+        if idea.likes.count > @most_popular.likes.count
+          @most_popular = idea
+        end 
+        @total_cost += idea.initial_cost
+        @likes_global += idea.likes.count
+      end
+    end
+    if params[:filter]
+        if params[:filter] == 'most_popular'
+        @ideas = @ideas.sort_by{|idea| idea.total_like}.reverse
+      elsif params[:filter] == 'most-recent'
+        @ideas = @ideas.order('id desc')
+      else
+        @ideas = @ideas.order('id asc')
+      end
+    end
+  end
 
   # POST /resource
   def create

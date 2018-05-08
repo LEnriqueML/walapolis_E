@@ -1,131 +1,118 @@
-<div class="idea-img img-fluid" align="center">
-  <h2><%= @idea.title %></h2>
-  <small>
-    <% @idea.categories.each do |category|%>
-      <%= link_to category.name, root_path(categoria: category) %> |
-    <% end %>
-  </small>
-  <p class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </p>
-  <div class="user-avatar">
-    <% if @idea.user.image.attached? %>
-        <%= image_tag @idea.user.image, width: 90, class: 'rounded-circle' %>
-      <% else %>
-        <i class="fas fa-user-circle fa-3x"></i> <!-- current_user.image -->
+<div class="container">
+  <div id="idea-bg-image" class="d-none" data-idea-image="<%#= @idea.image.attached? ? url_for(@idea.image) : image_url('default.jpg') %>"></div>
+  <div class="warp idea-bg text-center" style="padding-top: 120px">
+    <h2><%= @idea.title %></h2>
+    <small>
+      <% @idea.categories.each do |category|%>
+        <span><%= link_to "<i class='fas fa-tag'></i>#{category.name}".html_safe, root_path(categoria: category), class: 'text-light' %></small></span>
       <% end %>
-  </div>
-  <span><%= @idea.user.full_name %></span>
-  <% if @idea.user.verificated? %>
-    <span class="text-primary"><i class="fas fa-check-circle"></i> Verificado</span>
-  <% end %>
-</div>
-
-<div class="row">
-  
-  <div class="col-md-9">
-    <p><span style="font-size: 30px"><%= @idea.title %></span> - <%= @idea.show_categories %></p>
-    <p>
-      <!-- Condicion para verificar que el usuario aya añadido una imagen a su perfil, si no se muestra un fa icon -->
-      Por <%= @idea.user.image.attached? ? (image_tag @idea.user.image, width: 20, class: 'rounded-circle') : "<i class='fas fa-user-circle'></i>".html_safe %> <%= @idea.user.full_name %> - <%= @idea.created_at.strftime("%d/%m/%Y") %>
-    </p>
-    <div>
-      <%= render 'layouts/shared/likebutton', idea: @idea %>
-      <span class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </span>
-      <% if @idea.user == current_user%>
-        <span class="ml-5">
-          <%= link_to "<i class='fas fa-edit'></i> Editar idea".html_safe, edit_idea_path(@idea) %>
-        </span>
-      <% end %>
-    </div>
-    <div id="" ="idea-body" align="text-justify">
-      <%= @idea.body %>
-    </div>
-    <div class="img-thumbnail" id="social-links">
-      <input type="text" name="idea-url" value="<%= "#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" class="form-control" readonly><br>
-      <span class="mt-4">
-        <%= link_to "<i class='fab fa-facebook fa-2x'></i>".html_safe, nil, class:'mr-3 ml-3'%>
-        <%= link_to "<i class='fab fa-twitter fa-2x'></i>".html_safe, nil, class:'mr-3'%>
-        <%= link_to "<i class='fab fa-google fa-2x'></i>".html_safe, nil%>
-      </span>
-    </div>
-    <div id="comments" class="mt-3">
-      <div class="card">
-        <div class="card-header">
-          <p class="text-right"> <%= @idea.total_comments %> comentarios</p>
-          <% if user_signed_in? %>
-          <p>Deja tu comentario</p>
-          <%= render 'comments/form', comment: @comment%>
-          <% else %>
-            <p>Inicia sesion para paticipar en los comentarios. <%= link_to "Iniciar sesion", entrar_path %></p>
-          <% end %>
-        </div>
-        <div class="card-body">
-          <%= render 'comments/index' %>
-        </div>
-        <% if @comments.count > 10%>
-        <div class="acrd-footer">
-          <% if user_signed_in? %>
-          <p>Deja tu comentario</p>
-          <%= render 'comments/form', comment: @comment%>
-          <% else %>
-            <p>Inicia sesion para paticipar en los comentarios.</p>
-          <% end %>
-        </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-<!-- ########################################################################################## -->
-  <div class="col-md-3">
-    <div class="card">
-      <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Beneficios</p>
-      <div class="card-body">
-        <ul class="list-unstyled">
-          <% @idea.benefits.each do |benefit| %>
-            <li><i class="fas fa-check text-success"></i><%= benefit %></li>
-          <% end %>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card mt-5">
-      <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Costo Estimado</p>
-      <div class="card-body">
-        <div>Inversion inicial: <input type="text" name="" value="<%= number_to_currency(@idea.initial_cost) %>" class="form-control" readonly></div> 
-        <div class="mt-3">Gasto mensual: <input type="text" name="" value="<%= number_to_currency(@idea.monthly_cost) %>" class="form-control" readonly></div>
-        <div class="card-footer">
-          <small>La <strong>inversión inicial</strong> se refiere al costo estimado requerido para arrancar el proyecto y el <strong>gasto mensual</strong> se refiere al costo estimado para mantenerlo activo.</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="card mt-5">
-      <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Tiempo estimado</p>
-      <div class="card-body">
-        <% if (@idea.estimated_time == 0) || (@idea.estimated_time.nil?)%>
-          <h4 class="text-center">No se asignó un tiempo estimado</h4>
-        <% elsif @idea.estimated_time > 1%>
-          <h4 class="text-success text-center"><%= @idea.estimated_time %> meses</h4>
+    </small>
+    <p class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </p>
+    <div class="user-avatar">
+      <% if @idea.user.image.attached? %>
+          <%= image_tag @idea.user.image, width: 90, class: 'rounded-circle' %>
         <% else %>
-          <h4 class="text-success text-center"><%= @idea.estimated_time %> mes</h4>
+          <i class="fas fa-user-circle fa-3x"></i> <!-- current_user.image -->
+        <% end %>
+    </div>
+    <span><%= link_to @idea.user.full_name, profile_path(user_id: @idea.user.id), class: 'text-light' %></span>
+    <% if @idea.user.verificated? %>
+      <span class="text-primary"><i class="fas fa-check-circle"></i> Verificado</span>
+    <% end %>
+  </div>
+  <div class="row" style="padding-top: 20px">
+    <div class="col-md-9">
+      <p><span style="font-size: 30px"><%= @idea.title %></span> - <%= @idea.show_categories %></p>
+      <p>
+        <!-- Condicion para verificar que el usuario aya añadido una imagen a su perfil, si no se muestra un fa icon -->
+        Por <%= @idea.user.image.attached? ? (image_tag @idea.user.image, width: 20, class: 'rounded-circle') : "<i class='fas fa-user-circle'></i>".html_safe %> <%= link_to @idea.user.full_name, profile_path(user_id: @idea.user.id)%> - <%= @idea.created_at.strftime("%d/%m/%Y") %>
+      </p>
+      <div>
+        <%= render 'layouts/shared/likebutton', idea: @idea %>
+        <span class="text-success"><span class="count_likes"><%= @idea.total_like %></span> likes </span>
+        <% if @idea.user == current_user%>
+          <span class="ml-5">
+            <%= link_to "<i class='fas fa-edit'></i> Editar idea".html_safe, edit_idea_path(@idea) %>
+          </span>
         <% end %>
       </div>
-    </div>
-
-    <% if @idea.user.show_phone || @idea.user.show_email %>
-      <div class="card mt-5">
-        <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Hablar con <%= @idea.user.first_name %></p>
-        <div class="card-body">
-          <% if @idea.user.show_phone? && @idea.user.phone.present? %>
-            <div><%= link_to "<i class='fab fa-whatsapp'></i> Enviar WhatApp".html_safe, "https://api.whatsapp.com/send?phone=521#{@idea.user.phone}&text=Hola #{@idea.user.first_name}, me gustaría colaborar con la propuesta que as publicado en #{request.protocol}#{request.host_with_port}#{request.fullpath}, ¿Cómo te puedo apoyar?", target: "_blank", class: "btn btn-outline-success btn-block"%></div>
-          <% end %>
-          <% if @idea.user.show_email?%>
-            <div class="mt-3"><%= link_to "<i class='fas fa-envelope'></i> Enviar Email".html_safe, "mailto: #{@idea.user.email}?subjet=Tu idea me parecio interesante&body=Hola #{@idea.user.first_name}, me gustaría colaborar con la propuesta que as publicado en #{request.protocol}#{request.host_with_port}#{request.fullpath}, ¿Cómo te puedo apoyar?", class: "btn btn-outline-primary btn-block"%></div>
+      <div id="idea-body" align="text-justify">
+        <%= @idea.body %>
+      </div>
+      <div class="img-thumbnail" id="social-links">
+        <input type="text" name="idea-url" value="<%= "#{request.protocol}#{request.host_with_port}#{request.fullpath}" %>" class="form-control" readonly><br>
+        <span class="mt-4">
+          <%= link_to "<i class='fab fa-facebook fa-2x'></i>".html_safe, "https://www.facebook.com", class:'mr-3 ml-3'%>
+          <%= link_to "<i class='fab fa-twitter fa-2x'></i>".html_safe, nil, class:'mr-3'%>
+          <%= link_to "<i class='fab fa-google fa-2x'></i>".html_safe, nil%>
+        </span>
+      </div>
+      <div id="comments" class="mt-3">
+        <div class="card">
+          <div class="card-header">
+            <p class="text-right"> <%= @idea.total_comments %> comentarios</p>
+            <% if user_signed_in? %>
+            <p>Deja tu comentario</p>
+            <%= render 'comments/form', comment: @comment%>
+            <% else %>
+              <p>Inicia sesion para paticipar en los comentarios. <%= link_to "Iniciar sesion", entrar_path %></p>
+            <% end %>
+          </div>
+          <div class="card-body">
+            <%= render 'comments/index' %>
+          </div>
+          <% if @comments.count > 10%>
+          <div class="acrd-footer">
+            <% if user_signed_in? %>
+            <p>Deja tu comentario</p>
+            <%= render 'comments/form', comment: @comment%>
+            <% else %>
+              <p>Inicia sesion para paticipar en los comentarios.</p>
+            <% end %>
+          </div>
           <% end %>
         </div>
       </div>
-    <% end %>
+    </div>
+  <!-- ########################################################################################## -->
+    <div class="col-md-3">
+      <div class="card">
+        <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Beneficios</p>
+        <div class="card-body">
+          <ul class="list-unstyled">
+            <% @idea.benefits.each do |benefit| %>
+              <li><i class="fas fa-check text-success"></i><%= benefit %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mt-5">
+        <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Costo Estimado</p>
+        <div class="card-body">
+          <div>Inversion inicial: <input type="text" name="" value="<%= number_to_currency(@idea.initial_cost) %>" class="form-control" readonly></div> 
+          <div class="mt-3">Gasto mensual: <input type="text" name="" value="<%= number_to_currency(@idea.monthly_cost) %>" class="form-control" readonly></div>
+          <div class="card-footer">
+            <small>La <strong>inversión inicial</strong> se refiere al costo estimado requerido para arrancar el proyecto y el <strong>gasto mensual</strong> se refiere al costo estimado para mantenerlo activo.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-5">
+        <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Tiempo estimado</p>
+        <div class="card-body">
+          <% if (@idea.estimated_time == 0) || (@idea.estimated_time.nil?)%>
+            <h4 class="text-center">No se asignó un tiempo estimado</h4>
+          <% elsif @idea.estimated_time > 1%>
+            <h4 class="text-success text-center"><%= @idea.estimated_time %> meses</h4>
+          <% else %>
+            <h4 class="text-success text-center"><%= @idea.estimated_time %> mes</h4>
+          <% end %>
+        </div>
+      </div>
+
+      <%= render 'layouts/shared/talk_to_user', user: @idea.user %>
+    </div>
   </div>
 </div>
-
-
 <p id="notice"><%= notice %></p>

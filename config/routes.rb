@@ -14,9 +14,9 @@ Rails.application.routes.draw do
   devise_scope :user do
   	get 'entrar', to: 'users/sessions#new', as: :entrar
   	get 'registro', to: 'users/registrations#new', as: :registro
+    get '/perfiles/:user_id', to: 'users/registrations#profile', as: :profile
   end
 
-  get '/user_profile', to: 'static_pages#user_profile', as: :user_profile
 
   root to: 'static_pages#home'
   post '/likes/tgol/:user_id/:idea_id', to: 'likes#the_god_of_likes', as: :tgol

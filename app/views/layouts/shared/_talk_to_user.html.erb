@@ -1,0 +1,13 @@
+<% if user.show_phone || user.show_email %>
+  <div class="card mt-5">
+    <p class="card-header text-center" style="border-bottom-style: solid; border-bottom-width: 1px">Hablar con <%= user.first_name %></p>
+    <div class="card-body">
+      <% if user.show_phone? && user.phone.present? %>
+        <div><%= link_to "<i class='fab fa-whatsapp'></i> Enviar WhatsApp".html_safe, "https://api.whatsapp.com/send?phone=521#{user.phone}&text=Hola #{user.first_name}, me gustaría colaborar con la propuesta que as publicado en #{request.protocol}#{request.host_with_port}#{request.fullpath}, ¿Cómo te puedo apoyar?", target: "_blank", class: "btn btn-outline-success btn-block"%></div>
+      <% end %>
+      <% if user.show_email?%>
+        <div class="mt-3"><%= link_to "<i class='fas fa-envelope'></i> Enviar Email".html_safe, "mailto: #{user.email}?subjet=Tu idea me parecio interesante&body=Hola #{user.first_name}, me gustaría colaborar con la propuesta que as publicado en #{request.protocol}#{request.host_with_port}#{request.fullpath}, ¿Cómo te puedo apoyar?", class: "btn btn-outline-primary btn-block"%></div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

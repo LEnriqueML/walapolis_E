@@ -1,0 +1,46 @@
+<nav class="nav pb-3">
+	<small class="ml-auto"><%= link_to "<i class='fas fa-trophy text-muted'></i> Más populares".html_safe, current_page?(root_path) ? root_path(filter: "most_popular") : profile_path(@user, filter: "most_popular"), class: 'nav-link'%></small>
+	<small><%= link_to "<i class='fas fa-sort-alpha-down text-muted'></i> Más recientes".html_safe, current_page?(root_path) ? root_path(filter: "most-recent") : profile_path(@user, filter: "most-recent"), class: 'nav-link'%></small>
+	<small><%= link_to "<i class='fas fa-sort-alpha-up text-muted'></i> Más antiguas".html_safe, current_page?(root_path) ? root_path(filter: "oldest") : profile_path(@user, filter: "oldest"), class: 'nav-link'%></small>
+</nav>
+
+<% @ideas.each_slice(ideas_by_row) do |ideas| %>
+	<div class="row mb-5">
+		<% ideas.each do |idea| %>
+			<div class="col-sm-<%= col_size %>">
+				<div class="card">
+					<% if idea.image.attached? %>
+						<%=link_to (image_tag url_for(idea.image), class: 'card-img-top', style: 'height: 240px'), idea %>
+					<% else %>
+						<%= link_to (image_tag "default.jpg", class: 'card-img-top', style: 'height: 265px;'), idea %>
+					<% end %>
+					<div class="card-body">
+					   <h5 class="card-title"><%= link_to idea.title, idea_path(idea) %></h5>
+					   	<p>
+					   		<small>
+								<% idea.categories.each do |category| %>
+									<%= link_to category.name, root_path(categoria: category) %> |
+								<% end %>
+								</small>
+							</p>
+					   <small class="card-subtitle mb-2 text-muted">
+					   	Por <%= link_to idea.user.full_name, profile_path(user_id: idea.user.id) %> hace <%= time_ago_in_words(idea.created_at) %><br>
+							<%= idea.total_like %> likes // <%= idea.total_comments %> comentarios
+					   </small>
+					   <p class="card-text"><%= idea.body.truncate(140) %></p>
+					 </div>
+					 <div class="card-footer">
+					 	<div class="row">
+					 		<div class="col-sm-6">
+					 			<%= render 'layouts/shared/likebutton', idea: idea %>
+					 		</div>
+					 		<div class="col-sm-6">
+					 			<%= link_to "<i class='fas fa-external-link-alt'></i> Leer más".html_safe, idea_path(idea), class: 'btn btn-link' %>
+					 		</div>
+					 	</div>
+					 </div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+<% end %>
